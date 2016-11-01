@@ -2,10 +2,10 @@ import numbers
 import reprlib
 import numpy as np
 import sys
-from lazy import LazyOperation
+from timeseries.lazy import LazyOperation
 import math
-from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
-from TimeSeriesInterface import TimeSeriesInterface
+from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from timeseries.TimeSeriesInterface import TimeSeriesInterface
 
 class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
     '''This is the ArrayTimeSeries class implemented using Python.
