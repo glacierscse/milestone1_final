@@ -58,8 +58,46 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
          __bool__: The function that returns false when the length of self is 0, otherwise true.
          mean: The function that returns the mean of the time series.
          std: The function that returns the standard deviation of the time series data.
-
-     
+       
+       Examples:
+       --------     
+       >>> TimeSeries([1,2,3],[-15,4.5,12])
+       TimeSeries([(-15.0, 1), (4.5, 2), (12.0, 3)])
+       >>> len(TimeSeries([1,2,3])) 
+       3
+       >>> TimeSeries([0,1,2,3,4], [5,6,7,8,9])[1:3] 
+       TimeSeries([(6, 1), (7, 2)])
+       >>> TimeSeries([4,5,6],[1,2,3])[0] = 0
+       >>> repr(TimeSeries([4,5,6],[1,2,3]))
+       'TimeSeries([(1, 4), (2, 5), (3, 6)])'
+       >>> str(TimeSeries([4,5,6],[1,2,3])) 
+       '[(1, 4), (2, 5), (3, 6)]'
+       >>> TimeSeries([0,1,2,3,4],[5,6,7,8,9]).values()
+       array([0, 1, 2, 3, 4])
+       >>> TimeSeries([0,1,2,3,4],[5,6,7,8,9]).times()
+       array([5, 6, 7, 8, 9])
+       >>> TimeSeries([0,1,2,3,4],[5,6,7,8,9]).items()
+       [(5, 0), (6, 1), (7, 2), (8, 3), (9, 4)]
+       >>> 3 in TimeSeries([0,1,2,3,4],[5,6,7,8,9])
+       True
+       >>> TimeSeries([1,2,3], [0,5,10]).interpolate([1])
+       TimeSeries([(1, 1.2)])
+       >>> TimeSeries([4, 5, 6], [1, 2, 3]) == TimeSeries([4, 5, 6], [1, 2, 3])
+       True
+       >>> TimeSeries([4, 5, 6], [1, 2, 3]) + TimeSeries([6, 5, 4], [1, 2, 3])
+       TimeSeries([(1, 10), (2, 10), (3, 10)])
+       >>> TimeSeries([4, 5, 6], [1, 2, 3]) - TimeSeries([6, 5, 4], [1, 2, 3])
+       TimeSeries([(1, -2), (2, 0), (3, 2)])
+       >>> TimeSeries([4, 5, 6], [1, 2, 3]) * TimeSeries([6, 5, 4], [1, 2, 3])
+       TimeSeries([(1, 24), (2, 25), (3, 24)])
+       >>> +TimeSeries([4, 5, 6], [1, 2, 3]) 
+       TimeSeries([(1, 4), (2, 5), (3, 6)])
+       >>> -TimeSeries([6, 5, 4], [1, 2, 3])
+       TimeSeries([(1, -6), (2, -5), (3, -4)])
+       >>> abs(TimeSeries([4,5,6],[1,2,3]))
+       8.774964387392123
+       >>> bool(TimeSeries([4,5,6],[1,2,3]))
+       True
     '''
     def __init__(self, data, time = None):
         '''The constructor to initialize a TimeSeries object.

@@ -58,8 +58,46 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
          __bool__: The function that returns false when the length of self is 0, otherwise true.
          mean: The function that returns the mean of the time series.
          std: The function that returns the standard deviation of the time series data.
-
-
+    
+       Examples:
+       --------  
+       >>> ArrayTimeSeries([-15,4.5,12],[1,2,3])
+       ArrayTimeSeries([(-15.0, 1), (4.5, 2), (12.0, 3)])
+       >>> len(ArrayTimeSeries([1,2,3],[4,5,6])) 
+       3
+       >>> ArrayTimeSeries([5,6,7,8,9],[0,1,2,3,4])[1:3] 
+       ArrayTimeSeries([(6, 1), (7, 2)])
+       >>> ArrayTimeSeries([4,5,6],[1,2,3])[0] = 0
+       >>> repr(ArrayTimeSeries([1,2,3],[4,5,6]))
+       'ArrayTimeSeries([(1, 4), (2, 5), (3, 6)])'
+       >>> str(ArrayTimeSeries([1,2,3],[4,5,6])) 
+       '[(1, 4), (2, 5), (3, 6)]'
+       >>> ArrayTimeSeries([5,6,7,8,9],[0,1,2,3,4]).values()
+       array([0, 1, 2, 3, 4])
+       >>> ArrayTimeSeries([5,6,7,8,9],[0,1,2,3,4]).times()
+       array([5, 6, 7, 8, 9])
+       >>> ArrayTimeSeries([5,6,7,8,9], [0,1,2,3,4]).items()
+       [(5, 0), (6, 1), (7, 2), (8, 3), (9, 4)]
+       >>> 3 in ArrayTimeSeries([5,6,7,8,9], [0,1,2,3,4])
+       True
+       >>> ArrayTimeSeries([0,5,10], [1,2,3]).interpolate([1])
+       ArrayTimeSeries([(1, 1.2)])
+       >>> ArrayTimeSeries([1, 2, 3], [4, 5, 6]) == ArrayTimeSeries([1, 2, 3], [4, 5, 6])
+       True
+       >>> ArrayTimeSeries([1, 2, 3], [4, 5, 6]) + ArrayTimeSeries([1, 2, 3], [6, 5, 4])
+       ArrayTimeSeries([(1, 10), (2, 10), (3, 10)])
+       >>> ArrayTimeSeries([1, 2, 3], [4, 5, 6]) - ArrayTimeSeries([1, 2, 3], [6, 5, 4])
+       ArrayTimeSeries([(1, -2), (2, 0), (3, 2)])
+       >>> ArrayTimeSeries([1, 2, 3], [4, 5, 6]) * ArrayTimeSeries([1, 2, 3], [6, 5, 4])
+       ArrayTimeSeries([(1, 24), (2, 25), (3, 24)])
+       >>> +ArrayTimeSeries([1, 2, 3], [4, 5, 6])
+       ArrayTimeSeries([(1, 4), (2, 5), (3, 6)])
+       >>> -ArrayTimeSeries([1, 2, 3], [6, 5, 4])
+       ArrayTimeSeries([(1, -6), (2, -5), (3, -4)])
+       >>> abs(ArrayTimeSeries([1, 2, 3], [4, 5, 6]))
+       8.774964387392123
+       >>> bool(ArrayTimeSeries([1, 2, 3], [4, 5, 6]))
+       True
     '''
     def __init__(self, time, data):
         '''The constructor to initialize a ArrayTimeSeries object.
@@ -91,7 +129,7 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
         '''
         cls = type(self)
         if isinstance(index, slice):
-            return cls(self._value[index],self._key[index])
+            return cls(self._key[index],self._value[index])
         elif isinstance(index, numbers.Integral):
             return (self._key[index],self._value[index])
     

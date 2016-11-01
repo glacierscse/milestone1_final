@@ -56,7 +56,7 @@ def test_getitem_range():
     data = [0,1,2,3,4]#range(0,5)
     time = [5,6,7,8,9]#range(5,10)
     ts = ArrayTimeSeries(time,data)
-    assert ts[1:3] == ArrayTimeSeries([1,2],[6,7])
+    assert ts[1:3] == ArrayTimeSeries([6,7],[1,2])
 
 def test_getitem_index():
     data = [0,1,2,3,4]#range(0,5)
