@@ -172,7 +172,7 @@ class RedBlackTree:
                     self._follow(node.right_ref), key, value_ref))
         else:
             new_node = RedBlackNode.from_node(node, value_ref=value_ref)
-        self.balance(new_node)
+        new_node = self.balance(new_node)
         return RedBlackNodeRef(referent=new_node)
 
     def _insert(self, node, key, value_ref):
@@ -196,7 +196,7 @@ class RedBlackTree:
     def rotate_right(self, node):
         return RedBlackNode(
             left_ref=self._follow(node.left_ref).left_ref,
-            key=self_follow(node.left_ref).key, 
+            key=self._follow(node.left_ref).key, 
             value_ref=self._follow(node.left_ref).value_ref,
             right_ref=RedBlackNodeRef(
                 referent=RedBlackNode.from_node(
@@ -211,7 +211,7 @@ class RedBlackTree:
         return RedBlackNode.from_node(
             node,
             left_ref=RedBlackNodeRef(referent=self._follow(node.left_ref).blacken()),
-            left_ref=RedBlackNodeRef(referent=self._follow(node.right_ref).blacken()),
+            right_ref=RedBlackNodeRef(referent=self._follow(node.right_ref).blacken()),
             color=Color.RED
         )
 
@@ -219,30 +219,46 @@ class RedBlackTree:
         if node.is_red():
             return node
 
-        if self._follow(node.left_ref).is_red():
-            if self._follow(node.right_ref).is_red():
+        left = self._follow(node.left_ref)
+        right = self._follow(node.right_ref)
+        if left:
+            left_left = self._follow(left.left_ref)
+            left_right = self._follow(left.right_ref)
+        else:
+            left_left = None
+            left_right = None
+
+        if right:
+            right_right = self._follow(right.right_ref)
+            right_left = self._follow(right.left_ref)
+        else:
+            right_right = None
+            right_left = None
+
+        if left is not None and left.is_red():
+            if right is not None and right.is_red():
                 return self.recolor(node)
-            if self._follow(self._follow(node.left_ref).left_ref).is_red():
+            if left_left is not None and left_left.is_red():
                 return self.recolor(self.rotate_right(node))
-            if self._follow(self._follow(node.left_ref).right_ref).is_red():
+            if left_right is not None and left_right.is_red():
                 return self.recolor(self.rotate_right(
                     RedBlackNode.from_node(
                         node, 
                         left_ref=RedBlackNodeRef(
-                            referent=self.rotate_left(self._follow(node.left_ref))
-                    ))))
+                            referent=self.rotate_left(left))
+                    )))
             return node
 
-        if self._follow(node.right_ref).is_red():
-            if self._follow(self._follow(node.right_ref).right_ref).is_red():
+        if right is not None and right.is_red():
+            if right_right is not None and right_right.is_red():
                 return self.recolor(self.rotate_left(node))
-            if self._follow(self._follow(node.right_ref).left_ref).is_red():
+            if right_left is not None and right_left.is_red():
                 return self.recolor(self.rotate_left(
                     RedBlackNode.from_node(
                         node,
                         right_ref=RedBlackNodeRef(
-                            refernet=self.rotate_right(self._follow(node.right_ref))
-                    ))))
+                            refernet=self.rotate_right(right))
+                    )))
         return node
 
     def _follow(self, ref):
