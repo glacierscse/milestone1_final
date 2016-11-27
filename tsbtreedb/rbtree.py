@@ -1,6 +1,6 @@
 import pickle
 
-from logical import ValueRef
+from tsbtreedb.logical import ValueRef
 
 class Color:
     RED = 0
@@ -257,7 +257,7 @@ class RedBlackTree:
                     RedBlackNode.from_node(
                         node,
                         right_ref=RedBlackNodeRef(
-                            refernet=self.rotate_right(right))
+                            referent=self.rotate_right(right))
                     )))
         return node
 

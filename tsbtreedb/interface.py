@@ -1,5 +1,5 @@
-from rbtree import RedBlackTree
-from physical import Storage
+from tsbtreedb.rbtree import RedBlackTree
+from tsbtreedb.physical import Storage
 
 class DBDB(object):
 
