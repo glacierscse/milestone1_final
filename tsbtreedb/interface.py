@@ -26,6 +26,6 @@ class DBDB(object):
         self._assert_not_closed()
         return self._tree.set(key, value)
 
-    def delete(self, key):
+    def get_smaller_than(self, key):
         self._assert_not_closed()
-        return self._tree.delete(key)
+        return self._tree.get_smaller_than(key)
