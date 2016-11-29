@@ -1,11 +1,11 @@
 import sys
 sys.path.append('../')
 
-from calculateDistance import tsmaker
+from calculateDistance import tsmaker, standardize
 import pickle
 import random
 
-"""This script generate 1000 time series, each stored in a file in ts_data/.
+"""This script generate 1000 standardized time series, each stored in a file in ts_data/.
 """
 
 m_a, m_b = 0, 100
@@ -18,7 +18,7 @@ j = [random.randint(j_a, j_b) for i in range(1000)]
 
 for i in range(1000):
 	with open('ts_data/ts_' + str(i) + '.dat', 'wb+') as f:
-		ts = tsmaker(m[i], s[i], j[i])
+		ts = standardize(tsmaker(m[i], s[i], j[i]))
 		pickle.dump(ts, f)
 
 # for i in range(2):

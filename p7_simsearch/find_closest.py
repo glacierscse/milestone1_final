@@ -4,7 +4,7 @@ import sys
 sys.path.append('../')
 
 from tsbtreedb import *
-from calculateDistance import calcDist
+from calculateDistance import calcDist, standardize
 import pickle
 import heapq
 
@@ -31,14 +31,17 @@ if __name__ == '__main__':
 		cur_dist = dist[i][0]
 		cur_vt_id = dist[i][1]
 		cur_db = connect('ts_db_index/ts_' + cur_vt_id + '.db')
+		# find ts in current circle
 		radius = 2 * cur_dist
 		dist_ids = cur_db.get_smaller_than(radius)
 		cur_db.close()
-		# add ids to pQ
+		# calc distance from input ts to ts in current circle
 		for (ds, Id) in dist_ids:
 			if Id not in id_set:
 				id_set.add(Id)
-				heapq.heappush(similar_ts_pQ, (-ds, Id))
+				cur_ts = pickle.load(open('ts_data/ts_' + Id + '.dat', 'rb'))
+				ds_to_input = calcDist(input_ts, cur_ts)
+				heapq.heappush(similar_ts_pQ, (-ds_to_input, Id))
 				if len(similar_ts_pQ) > num_to_find:
 						heapq.heappop(similar_ts_pQ)
 	# print(len(similar_ts_pQ))

@@ -25,7 +25,7 @@ for i in rand_vantage:
 	db = connect('ts_db_index/ts_' + str(i) + '.db')
 	for j in range(1000):
 			other_ts = pickle.load(open('ts_data/ts_' + str(j) + '.dat', 'rb'))
-			dist = calcDist(standardize(ts), standardize(other_ts))
+			dist = calcDist(ts, other_ts)
 			# if j < 100:
 			# 	print(dist)
 			db.set(dist, str(j))
