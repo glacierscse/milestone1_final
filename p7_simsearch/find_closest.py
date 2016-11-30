@@ -3,15 +3,24 @@
 import sys
 sys.path.append('../')
 
-from tsbtreedb import *
-from calculateDistance import calcDist, standardize
+import os
 import pickle
 import heapq
 
-if __name__ == '__main__':
-	input_file = sys.argv[1]
-	num_to_find = int(sys.argv[2])
-	input_ts = pickle.load(open(input_file, 'rb'))
+from tsbtreedb import *
+from calculateDistance import calcDist, standardize
+import click
+
+@click.command()
+@click.option('--input', help='name of your input ts file')
+@click.option('--n', default=10, help='number of similar points to find')
+@click.option('-n', default=10, help='number of similar points to find')
+@click.option('--show-dist', is_flag=True, help='set this flag to show (and store) corresponding distance from similar points to input point')
+@click.option('--clear-dir', is_flag=True, help='set this flag to clear the search result directory')
+def search(input, n, show_dist, clear_dir):
+	"""search for n closest points to input ts, results are stored as .dat file
+	"""
+	input_ts = pickle.load(open(input, 'rb'))
 	
 	# load vantage points
 	vantage_pts = []
@@ -27,7 +36,7 @@ if __name__ == '__main__':
 	# print(dist)
 	id_set = set()
 	similar_ts_pQ = []
-	for i in range(num_to_find):
+	for i in range(n):
 		cur_dist = dist[i][0]
 		cur_vt_id = dist[i][1]
 		cur_db = connect('ts_db_index/ts_' + cur_vt_id + '.db')
@@ -42,8 +51,24 @@ if __name__ == '__main__':
 				cur_ts = pickle.load(open('ts_data/ts_' + Id + '.dat', 'rb'))
 				ds_to_input = calcDist(input_ts, cur_ts)
 				heapq.heappush(similar_ts_pQ, (-ds_to_input, Id))
-				if len(similar_ts_pQ) > num_to_find:
+				if len(similar_ts_pQ) > n:
 						heapq.heappop(similar_ts_pQ)
-	# print(len(similar_ts_pQ))
-	print('Closest (up to) ' + str(num_to_find) + ' time series: ', sorted([(-ds, Id) for (ds, Id) in similar_ts_pQ]))
 
+	# print and store to file
+	if not os.path.exists('search_res/'):
+		os.makedirs('search_res/')
+	elif clear_dir:
+		for f in os.listdir('search_res/'):
+			os.remove(os.path.join('search_res/', f))
+
+	if show_dist:
+		sim_ts = sorted([(-ds, 'ts_%s.dat'%Id) for (ds, Id) in similar_ts_pQ])
+		pickle.dump(sim_ts, open('search_res/sim_%d_ts_wdist.dat'%n, 'wb+'))
+		print('Closest (up to) %d time series: '%n, sim_ts)
+	else:
+		sim_ts = sorted([(-ds, 'ts_%s.dat'%Id) for (ds, Id) in similar_ts_pQ])
+		sim_ts = [name for (ds, name) in sim_ts]
+		pickle.dump(sim_ts, open('search_res/sim_%d_ts.dat'%n, 'wb+'))
+		print('Closest (up to) %d time series: '%n, sim_ts)
+if __name__ == '__main__':
+	search()
