@@ -68,7 +68,7 @@ class RedBlackNode:
         """Method for a node to store all of its stuff
         """
         self.value_ref.store(storage)
-        #calls BinaryNodeRef.store. which calls BinaryNodeRef.prepate_to_store
+        #calls RedBlackNodeRef.store. which calls RedBlackNodeRef.prepate_to_store
         #which calls this again and recursively stores the whole tree
         self.left_ref.store(storage)
         self.right_ref.store(storage)
@@ -109,21 +109,6 @@ class RedBlackTree:
         self._tree_ref = RedBlackNodeRef(
             address=self._storage.get_root_address())
 
-    # @property
-    # def color(self):
-    #     return self.color
-
-    # @property
-    # def value(self):
-    #     return self.value
-
-    # @property
-    # def right(self):
-    #     return self.right
-
-    # @property
-    # def left(self):
-    #     return self._left
     def get(self, key):
         """Get value for a key
         """
@@ -290,73 +275,3 @@ class RedBlackTree:
         """
         #calls RedBlackNodeRef.get
         return ref.get(self._storage)
-
-
-    # def update(self, node):
-    #     if node.is_empty():
-    #         return self
-    #     if node.value < self.value:
-    #         return RedBlackTree(
-    #             self.left.update(node).balance(),
-    #             self.value,
-    #             self.right,
-    #             color=self.color,
-    #         ).balance()
-    #     return RedBlackTree(
-    #         self.left,
-    #         self.value,
-    #         self.right.update(node).balance(),
-    #         color=self.color,
-    #     ).balance()
-
-    # def insert(self, value):
-    #     return self.update(
-    #         RedBlackTree(
-    #             EmptyRedBlackTree(),
-    #             value,
-    #             EmptyRedBlackTree(),
-    #             color=Color.RED,
-    #         )
-    #     ).blacken()
-
-    # def is_member(self, value):
-    #     if value < self._value:
-    #         return self.left.is_member(value)
-    #     if value > self._value:
-    #         return self.right.is_member(value)
-    #     return True
-
-
-
-# class EmptyRedBlackTree(RedBlackTree):
-
-#     def __init__(self):
-#         self._color = Color.BLACK
-
-#     def is_empty(self):
-#         return True
-
-#     def insert(self, value):
-#         return RedBlackTree(
-#             EmptyRedBlackTree(),
-#             value,
-#             EmptyRedBlackTree(),
-#             color=Color.RED,
-#         )
-
-#     def update(self, node):
-#         return node
-
-#     def is_member(self, value):
-#         return False
-
-#     @property
-#     def left(self):
-#         return EmptyRedBlackTree()
-
-#     @property
-#     def right(self):
-#         return EmptyRedBlackTree()
-
-#     def __len__(self):
-#         return 0
