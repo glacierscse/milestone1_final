@@ -18,7 +18,7 @@ import click
 @click.option('--show-dist', is_flag=True, help='set this flag to show (and store) corresponding distance from similar points to input point')
 @click.option('--clear-dir', is_flag=True, help='set this flag to clear the search result directory')
 def search(input, n, show_dist, clear_dir):
-	"""search for n closest points to input ts, results are stored as .dat file
+	"""search for n closest points to input ts, results are stored as .dat file in search_res/
 	"""
 	input_ts = pickle.load(open(input, 'rb'))
 	
