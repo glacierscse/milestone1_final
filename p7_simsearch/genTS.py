@@ -13,8 +13,8 @@ s_a, s_b = 0.1, 10
 j_a, j_b = 1, 50
 
 @click.command()
-@click.option('-n', default=1000, help='number of ts to generate')
-@click.option('--n', default=1000, help='number of ts to generate')
+@click.option('-n', default=1000, help='number of ts to generate, default 1000')
+@click.option('--n', default=1000, help='number of ts to generate, default 1000')
 def genTS(n):
 	"""generate n standardized time series, each stored in a file in ts_data/.
 	"""

@@ -10,8 +10,8 @@ from tsbtreedb import *
 import click
 
 @click.command()
-@click.option('-n', default=20, help='number of vantage points to generate')
-@click.option('--n', default=20, help='number of vantage points to generate')
+@click.option('-n', default=20, help='number of vantage points to generate, default 20')
+@click.option('--n', default=20, help='number of vantage points to generate, default 20')
 def genVantage(n):
 	"""generate n vantage points for our ts data
 	"""
