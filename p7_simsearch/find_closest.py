@@ -64,11 +64,15 @@ def search(input, n, show_dist, clear_dir):
 	if show_dist:
 		sim_ts = sorted([(-ds, 'ts_%s.dat'%Id) for (ds, Id) in similar_ts_pQ])
 		pickle.dump(sim_ts, open('search_res/sim_%d_ts_wdist.dat'%n, 'wb+'))
-		print('Closest (up to) %d time series: '%n, sim_ts)
+		print('Closest (up to) %d time series and their distances to input ts: '%n)
+		for (ds, name) in sim_ts:
+			print('%s: %.10f'%(name, ds))
 	else:
 		sim_ts = sorted([(-ds, 'ts_%s.dat'%Id) for (ds, Id) in similar_ts_pQ])
 		sim_ts = [name for (ds, name) in sim_ts]
 		pickle.dump(sim_ts, open('search_res/sim_%d_ts.dat'%n, 'wb+'))
-		print('Closest (up to) %d time series: '%n, sim_ts)
+		print('Closest (up to) %d time series: '%n)
+		for name in sim_ts:
+			print('%s\n'%name)
 if __name__ == '__main__':
 	search()

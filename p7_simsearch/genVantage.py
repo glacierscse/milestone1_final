@@ -26,7 +26,7 @@ def genVantage(n):
 			os.remove(os.path.join('ts_db_index/', f))
 
 	# number of ts data in ts_data/
-	num_ts = len(os.listdir('ts_data/'))
+	num_ts = len(os.listdir('ts_data/')) - 1
 	if n > num_ts:
 		raise ValueError('number of vantage points cannot exceed the number of ts data')
 
