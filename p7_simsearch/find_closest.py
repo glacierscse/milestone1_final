@@ -13,8 +13,8 @@ import click
 
 @click.command()
 @click.option('--input', help='name of your input ts file')
-@click.option('--n', default=10, help='number of similar points to find')
-@click.option('-n', default=10, help='number of similar points to find')
+@click.option('--n', default=10, help='number of similar points to find, default 10')
+@click.option('-n', default=10, help='number of similar points to find, default 10')
 @click.option('--show-dist', is_flag=True, help='set this flag to show (and store) corresponding distance from similar points to input point')
 @click.option('--clear-dir', is_flag=True, help='set this flag to clear the search result directory')
 def search(input, n, show_dist, clear_dir):
